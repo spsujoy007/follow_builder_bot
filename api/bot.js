@@ -1,4 +1,5 @@
-const { Telegraf, Markup } = require("telegraf");
+import { Telegraf, Markup } from "telegraf";
+import { Buffer } from "buffer";  // If needed for body parsing
 require("dotenv").config();
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
@@ -54,12 +55,16 @@ bot.action('show_time', async(ctx) => {
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      await bot.handleUpdate(req.body);
+      // Pass incoming webhook updates from Telegram to the bot
+      await bot.handleUpdate(req.body); // This processes the webhook update
+      return res.status(200).send('OK');
     } catch (err) {
-      console.error('Bot error:', err);
+      console.error('Error processing webhook:', err);
+      return res.status(500).send('Error');
     }
+  } else {
+    return res.status(405).send('Method Not Allowed');
   }
-  res.status(200).send('ok');
 }
 
 // bot.launch()
