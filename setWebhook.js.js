@@ -1,5 +1,5 @@
-let {axios} = require("axios")
-
+let axios = require("axios")
+require("dotenv").config()
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const WEBHOOK_URL = 'https://follow-builder-bot.vercel.app/';
